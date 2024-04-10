@@ -1,0 +1,36 @@
+<html>
+<head>
+    <title>Generateur de mindmap</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+
+</head>
+<body>
+    <h1>Generateur de mindmap</h1>
+    <div id="graphDiv">&nbsp</div>
+    <input type="text" id="mindmap">
+    <button id="generateMindmap">Generer</button>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mermaid/10.9.0/mermaid.min.js" integrity="sha512-gx05X612uoaolzJ5Ee/786b3th+qzAm90TOvRwZJwnE8yr0sHQG8eLxdR0/Hbqc2IFh2mWHzzXk79g3atNSwsQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script type="module">
+      import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+      mermaid.initialize({ startOnLoad: false });
+      // Example of using the render function
+      const drawDiagram = async function () {
+        const element = document.querySelector('#graphDiv');
+        jQuery.get("/updatePrompt/"+$("#mindmap").val(), async function(graphDefinition) {
+            const { svg } = await mermaid.render('mySvgId', graphDefinition.replace("```mermaid","").replace("```",""));
+            element.innerHTML = svg.replace(/[ ]*max-width:[ 0-9\.]*px;/i , '');    
+            var panZoomTiger = svgPanZoom('#mySvgId', {
+            zoomEnabled: true,
+            controlIconsEnabled: true,
+            fit: true,
+            center: true
+            })
+            await drawDiagram();
+        });
+      };
+      $("#generateMindmap").on("click", drawDiagram);
+    </script>
+</body>
+</html>
