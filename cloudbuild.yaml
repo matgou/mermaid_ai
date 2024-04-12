@@ -1,0 +1,3 @@
+steps:
+- name: 'gcr.io/cloud-builders/docker'
+  args: ['build', '-t', 'europe-west1-docker.pkg.dev/sandbox-mgoulin/mermaid-ai/mermaidai:1.3', 'api/']

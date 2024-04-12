@@ -1,0 +1,66 @@
+<nav class="navbar navbar-expand-sm navbar-light bg-light">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="#">
+      <h1>🧠💡Generateur de mindmap</h1>
+    </a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <li class="nav-item">
+          <a class="nav-link active" aria-current="page" href="#">Generateur</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+<div class="container-fluid py-3">
+  <div class="row">
+      <div class="col col-md-auto">
+        <label for="exampleFormControlTextarea1" class="form-label">💡 Votre idée :</label>
+      </div>
+      <div class="col ">
+        <input type="text" (keyup.enter)="generateMindmap()" class="form-control form-control-sm" id="exampleFormControlTextarea1" rows="3" [(ngModel)]='graph.graphPrompt'>
+      </div>
+      <div class="col col-lg-2">
+        <button type="button" class="btn btn-danger" id="generateMindmap" (click)="generateMindmap()">🚀 Générer</button><br />
+      </div>
+  </div>
+  <div class="row my-3">
+    <div class="col col-lg-2">
+      <ul class="list-group list-group-numbered">
+        <li *ngFor="let oldGraph of history" class="list-group-item d-flex justify-content-between align-items-start">
+           <div class="ms-2 me-auto" (click)="restoreGraph(oldGraph)" style="cursor: pointer;">
+              <div class="fw-bold">{{ oldGraph.graphPrompt }}</div>
+              {{ oldGraph.graphPrompt }}
+            </div>
+            <span class="badge text-bg-primary rounded-pill">restore</span>
+        </li>
+      </ul>
+    </div>
+    <div class="col col-rg-auto">
+      <ul class="nav nav-tabs">
+        <li class="nav-item">
+          <a [ngClass]="{active: display==='graph'}" (click)="display='graph'" class="nav-link" aria-current="page" href="#">Graph</a>
+        </li>
+        <li class="nav-item">
+          <a [ngClass]="{active: display==='code'}" (click)="display='code'" class="nav-link" href="#">Code</a>
+        </li>
+      </ul>
+      <div class="row my-3" *ngIf="display==='loading'"  style="width: 100%; text-align: center;">
+        <div class="spinner-border" role="status">
+        </div>
+      </div>
+      <div class="row my-3" *ngIf="display==='graph'">
+        <span #mermaid [innerHTML]="svgGraph"></span>
+      </div>
+      <div class="row my-3" *ngIf="display==='code'">
+        <div class="col">
+          <label for="FormGraphDefinitionTextarea1" class="form-label">Code</label>
+          <textarea disabled class="form-control form-control-sm" id="FormGraphDefinitionTextarea1" rows="30" [(ngModel)]='graph.graphDefinition'></textarea>
+        </div>
+      </div>
+    </div>
+  </div>
+</div> 
