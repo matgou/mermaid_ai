@@ -44,6 +44,9 @@ def generate_prompt():
 def redirect_index():
     return redirect("/static/index.html")
 
+@app.route("/static/")
+def redirect_static():
+    return redirect("/static/index.html")
 # 
 if __name__ == "__main__":
     app.run("0.0.0.0", port=8080, debug=True)

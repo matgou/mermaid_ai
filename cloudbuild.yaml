@@ -1,3 +1,17 @@
 steps:
+  # Build Front
+- name: node:18
+  entrypoint: bash
+  args: 
+    - -c
+    - |
+      npm install -g @angular/cli
+      cd front/mermaid-ai
+      npm install
+      ng build --base-href /static/ --deploy-url /static/
+      cp -rv dist/mermaid-ai/browser/* ../../api/static/
+  # Build
 - name: 'gcr.io/cloud-builders/docker'
-  args: ['build', '-t', 'europe-west1-docker.pkg.dev/sandbox-mgoulin/mermaid-ai/mermaidai:1.3', 'api/']
+  args: ['build', '-t', 'europe-west1-docker.pkg.dev/sandbox-mgoulin/mermaid-ai/mermaidai:1.4', 'api/']
+- name: 'gcr.io/cloud-builders/docker'
+  args: ['push', 'europe-west1-docker.pkg.dev/sandbox-mgoulin/mermaid-ai/mermaidai:1.4']

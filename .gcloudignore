@@ -1,1 +1,4 @@
 api/venv
+front/mermaid-ai/node_modules
+front/mermaid-ai/dist
+front/mermaid-ai/package-lock.json
